@@ -36,3 +36,8 @@ async def generate_image(request: ImageRequest):
 @app.get('/')
 def hello_world():
     return {'message': 'Hello World'}
+
+@app.get("/test")
+async def test(prompt: str):
+    request = ImageRequest(prompt=prompt)
+    return await generate_image(request)
