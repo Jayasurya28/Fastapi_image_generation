@@ -5,13 +5,16 @@ import os
 from io import BytesIO
 from PIL import Image
 from fastapi.responses import FileResponse
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 token = os.getenv("HUGGING_FACE_KEY")
 
 app = FastAPI()
 
 client = InferenceClient(
-    provider="together",
+    provider="hf-inference",
     api_key=token
 )
 
@@ -21,9 +24,10 @@ class ImageRequest(BaseModel):
 @app.post("/generate-image")
 async def generate_image(request: ImageRequest):
     try:
+        logging.info(f'Generating image for prompt: {request.prompt}')
         image = client.text_to_image(
             request.prompt,
-            model="black-forest-labs/FLUX.1-dev"
+            model="codermert/gamzekocc_fluxx"
         )
         
         image_path = "generated_image.jpg"
@@ -31,6 +35,7 @@ async def generate_image(request: ImageRequest):
         
         return FileResponse(image_path, media_type='image/jpeg')
     except Exception as e:
+        logging.error(f'Error generating image: {str(e)}')
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get('/')
