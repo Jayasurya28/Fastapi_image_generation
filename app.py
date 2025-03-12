@@ -28,3 +28,7 @@ async def predict(request: PromptRequest):
         raise HTTPException(status_code=response.status_code, detail=response.text)
 
     return {"result": response.json()}
+
+@app.get('/')
+def hello_world():
+    return {'message': 'Hello World'}
