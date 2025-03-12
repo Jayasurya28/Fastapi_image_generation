@@ -32,3 +32,7 @@ async def generate_image(request: ImageRequest):
         return FileResponse(image_path, media_type='image/jpeg')
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get('/')
+def hello_world():
+    return {'message': 'Hello World'}

@@ -29,6 +29,4 @@ async def predict(request: PromptRequest):
 
     return {"result": response.json()}
 
-@app.get('/')
-def hello_world():
-    return {'message': 'Hello World'}
+
